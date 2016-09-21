@@ -38,6 +38,7 @@ public class Student {
                 this.gLevel = GradeLevel.SENIOR;
                 break;
             default:
+                break;
                 
         }
               

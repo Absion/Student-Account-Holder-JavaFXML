@@ -18,11 +18,7 @@ import java.lang.Object;
 public class FXMLDocumentController implements Initializable {
 
     Student student = new Student();
-    ArrayList<Student> studentList = new ArrayList<Student>();
-    String firstNameHolder;
-    String lastNameHolder;
-    String dOfBirthHolder;
-    String gradeHolder;
+    List<Student> studentList = new ArrayList<Student>();
     int index;
     int numberOfStudents;
 
@@ -45,25 +41,26 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField statusField;
 
+    //THIS BUTTON SHOULD CREATE A STUDENT FROM DATA ENTERED BY USER AND ADD TO STUDENT ARRAY
     @FXML
     private void handleNewButtonAction(ActionEvent event) {
+//CHECKS TO SEE IF VALID ENTRY HAS BEEN GIVEN FOR GRADE LEVEL
+        if (gradeLevelField.getText().toUpperCase().equals("FRESHMAN") 
+                || gradeLevelField.getText().toUpperCase().equals("SOPHMORE") 
+                || gradeLevelField.getText().toUpperCase().equals("JUNIOR") 
+                || gradeLevelField.getText().toUpperCase().equals("SENIOR")) {
 
-        if (gradeLevelField.getText().toUpperCase().equals("FRESHMAN") || gradeLevelField.getText().toUpperCase().equals("SOPHMORE") || gradeLevelField.getText().toUpperCase().equals("JUNIOR") || gradeLevelField.getText().toUpperCase().equals("SENIOR")) {
-            firstNameHolder = firstNameField.getText();
+            //MODIFES STUDENT OBJECT WITH DATA FROM TEXT FIELDS
+            student.setFirstName(firstNameField.getText());
+            student.setLastName(lastNameField.getText());
+            student.setDateOfBirth(dateOfBirthField.getText());
+            student.setGradeLevel(gradeLevelField.getText());
 
-            lastNameHolder = lastNameField.getText();
-
-            dOfBirthHolder = dateOfBirthField.getText();
-
-            gradeHolder = gradeLevelField.getText();
-
-            student.setFirstName(firstNameHolder);
-            student.setLastName(lastNameHolder);
-            student.setDateOfBirth(dOfBirthHolder);
-            student.setGradeLevel(gradeHolder);
-
+            //ADDS STUDENT OBJECT TO ARRAY
             studentList.add(student);
             numberOfStudents = studentList.size();
+            
+            System.out.println(student.toString());
             
             firstNameField.clear();
             lastNameField.clear();
@@ -76,7 +73,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-
+//THIS BUTTON SHOULD DELETE STUDENT AT CURRENT INDEX GIVEN BY STATUSFIELD BOX
     @FXML
     private void handleDeleteButtonAction(ActionEvent event) {
         if(isInt(statusField.getText())){
@@ -91,21 +88,21 @@ public class FXMLDocumentController implements Initializable {
             statusField.setText("No student loaded");
 
     }
-
+//THIS BUTTON SHOULD LOAD STUDENTS FROM ARRAY AND DISPLAY IN THE TEXT BOXES
     @FXML
     private void handleNextButtonAction(ActionEvent event) {
         
         
-        
+        //SHOULD ONLY RUN IF THE STATUS FIELD DOES NOT CONTAIN A NUMBER
         if(!isInt(statusField.getText()))
         statusField.clear();
         
-        
-        if (studentList.isEmpty()) {
+        //CHECKS FOR PRESSES BEOFRE ANY STUDENTS ARE GIVEN
+        if (studentList.isEmpty()){
             statusField.setText("No Students in Memory");
         } 
         else {
-        
+        //THIS SHOULD RUN ONLY FOR THE FIRST TIME THE BUTTON IS PRESSED AFTER STUDENTS ARE CREATED
         if (statusField.getText().isEmpty()) {
             statusField.setText("1");
             index = Integer.parseInt(statusField.getText()) - 1;
@@ -116,21 +113,21 @@ public class FXMLDocumentController implements Initializable {
             dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
             gradeLevelField.setText(studentList.get(index).getGradeLevel());
             
-            firstNameField.clear();
-            lastNameField.clear();
-            dateOfBirthField.clear();
-            gradeLevelField.clear();
+            System.out.println(studentList.get(index).toString());
+            
         } 
-        
+        //SHOULD LOAD EVERY FOLLOWING STUDENT
         else {
           if (Integer.parseInt(statusField.getText()) < numberOfStudents) {
-             index++;
+             index = index + 1;
             statusField.setText(Integer.toString(index + 1));
             
             firstNameField.setText(studentList.get(index).getFirstName());
             lastNameField.setText(studentList.get(index).getLastName());
             dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
             gradeLevelField.setText(studentList.get(index).getGradeLevel());
+            
+            System.out.println(studentList.get(index).toString());
             
         }
           else
