@@ -8,7 +8,7 @@ package studentaccountholder;
 
 import java.io.*;
 
-public class Student {
+public class Student implements Serializable {
     
     private String firstName;
     private String lastName;
@@ -19,12 +19,14 @@ public class Student {
     private GradeLevel gLevel;
     
     public String getGradeLevel() {
-        return gLevel.toString();
+        return this.gLevel.toString();
     }
 
     public void setGradeLevel(String input) {
         
-        switch (input.toUpperCase()){
+        String x = input.toUpperCase();
+        
+        switch (x){
             case "FRESHMAN":
                 this.gLevel = GradeLevel.FRESHMAN;
                 break;
@@ -38,7 +40,6 @@ public class Student {
                 this.gLevel = GradeLevel.SENIOR;
                 break;
             default:
-                break;
                 
         }
               
@@ -46,7 +47,7 @@ public class Student {
     
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -54,7 +55,7 @@ public class Student {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -62,14 +63,14 @@ public class Student {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth;
+        return this.dateOfBirth;
     }
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
     
-    
+   
     
     
 }

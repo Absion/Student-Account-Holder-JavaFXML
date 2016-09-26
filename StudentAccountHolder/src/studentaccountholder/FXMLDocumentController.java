@@ -1,5 +1,6 @@
 package studentaccountholder;
 
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javafx.event.ActionEvent;
@@ -17,19 +18,23 @@ import java.lang.Object;
  */
 public class FXMLDocumentController implements Initializable {
 
-    Student student = new Student();
-    List<Student> studentList = new ArrayList<Student>();
+    
+    LinkedList<Student> studentList = new LinkedList<Student>();
+    String firstNameHolder;
+    String lastNameHolder;
+    String dOfBirthHolder;
+    String gradeHolder;
     int index;
     int numberOfStudents;
 
     @FXML
-    private TextField firstNameField;
+    private TextField firstNameField = new TextField();
     @FXML
-    private TextField lastNameField;
+    private TextField lastNameField = new TextField();
     @FXML
-    private TextField dateOfBirthField;
+    private TextField dateOfBirthField = new TextField();
     @FXML
-    private TextField gradeLevelField;
+    private TextField gradeLevelField = new TextField();
     @FXML
     private Button newStudentButton;
     @FXML
@@ -39,100 +44,107 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button deleteStudentButton;
     @FXML
-    private TextField statusField;
+    private TextField statusField = new TextField();
+    @FXML
+    private Button writeButton;
+    @FXML
+    private Button loadButton;
 
-    //THIS BUTTON SHOULD CREATE A STUDENT FROM DATA ENTERED BY USER AND ADD TO STUDENT ARRAY
     @FXML
     private void handleNewButtonAction(ActionEvent event) {
-//CHECKS TO SEE IF VALID ENTRY HAS BEEN GIVEN FOR GRADE LEVEL
-        if (gradeLevelField.getText().toUpperCase().equals("FRESHMAN") 
-                || gradeLevelField.getText().toUpperCase().equals("SOPHMORE") 
-                || gradeLevelField.getText().toUpperCase().equals("JUNIOR") 
-                || gradeLevelField.getText().toUpperCase().equals("SENIOR")) {
 
-            //MODIFES STUDENT OBJECT WITH DATA FROM TEXT FIELDS
-            student.setFirstName(firstNameField.getText());
-            student.setLastName(lastNameField.getText());
-            student.setDateOfBirth(dateOfBirthField.getText());
-            student.setGradeLevel(gradeLevelField.getText());
+        Student student = new Student();
+        
+        if (gradeLevelField.getText().toUpperCase().equals("FRESHMAN") || gradeLevelField.getText().toUpperCase().equals("SOPHMORE") || gradeLevelField.getText().toUpperCase().equals("JUNIOR") || gradeLevelField.getText().toUpperCase().equals("SENIOR")) {
+            firstNameHolder = this.firstNameField.getText();
 
-            //ADDS STUDENT OBJECT TO ARRAY
+            lastNameHolder = this.lastNameField.getText();
+
+            dOfBirthHolder = this.dateOfBirthField.getText();
+
+            gradeHolder = this.gradeLevelField.getText();
+
+            student.setFirstName(firstNameHolder);
+            student.setLastName(lastNameHolder);
+            student.setDateOfBirth(dOfBirthHolder);
+            student.setGradeLevel(gradeHolder);
+
             studentList.add(student);
             numberOfStudents = studentList.size();
             
-            System.out.println(student.toString());
             
-            firstNameField.clear();
-            lastNameField.clear();
-            dateOfBirthField.clear();
-            gradeLevelField.clear();
+            
+            this.firstNameField.clear();
+            this.lastNameField.clear();
+            this.dateOfBirthField.clear();
+            this.gradeLevelField.clear();
 
-            statusField.setText("Student Added Succesfully");
+            this.statusField.setText("Student Added Succesfully");
         } else {
-            statusField.setText("Invalid Entry Given");
+            this.statusField.setText("Invalid Entry Given");
         }
 
     }
-//THIS BUTTON SHOULD DELETE STUDENT AT CURRENT INDEX GIVEN BY STATUSFIELD BOX
+
     @FXML
     private void handleDeleteButtonAction(ActionEvent event) {
         if(isInt(statusField.getText())){
             studentList.remove(Integer.parseInt(statusField.getText()) - 1);
-            statusField.setText("Student Deleted");
-            firstNameField.clear();
-            lastNameField.clear();
-            dateOfBirthField.clear();
-            gradeLevelField.clear();
+            this.statusField.setText("Student Deleted");
+            this.firstNameField.clear();
+            this.lastNameField.clear();
+            this.dateOfBirthField.clear();
+            this.gradeLevelField.clear();
         }
         else
-            statusField.setText("No student loaded");
+            this.statusField.setText("No student loaded");
 
     }
-//THIS BUTTON SHOULD LOAD STUDENTS FROM ARRAY AND DISPLAY IN THE TEXT BOXES
+
     @FXML
     private void handleNextButtonAction(ActionEvent event) {
         
         
-        //SHOULD ONLY RUN IF THE STATUS FIELD DOES NOT CONTAIN A NUMBER
-        if(!isInt(statusField.getText()))
-        statusField.clear();
         
-        //CHECKS FOR PRESSES BEOFRE ANY STUDENTS ARE GIVEN
-        if (studentList.isEmpty()){
-            statusField.setText("No Students in Memory");
+        if(!isInt(this.statusField.getText()))
+        this.statusField.clear();
+        
+        
+        if (studentList.isEmpty()) {
+            this.statusField.setText("No Students in Memory");
         } 
         else {
-        //THIS SHOULD RUN ONLY FOR THE FIRST TIME THE BUTTON IS PRESSED AFTER STUDENTS ARE CREATED
-        if (statusField.getText().isEmpty()) {
-            statusField.setText("1");
-            index = Integer.parseInt(statusField.getText()) - 1;
+        
+        if (this.statusField.getText().isEmpty()) {
+            this.statusField.setText("1");
+            index = Integer.parseInt(this.statusField.getText()) - 1;
             
            
-            firstNameField.setText(studentList.get(index).getFirstName());
-            lastNameField.setText(studentList.get(index).getLastName());
-            dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
-            gradeLevelField.setText(studentList.get(index).getGradeLevel());
+            this.firstNameField.setText(studentList.get(index).getFirstName());
+            this.lastNameField.setText(studentList.get(index).getLastName());
+            this.dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
+            this.gradeLevelField.setText(studentList.get(index).getGradeLevel());
             
-            System.out.println(studentList.get(index).toString());
-            
+            this.firstNameField.clear();
+            this.lastNameField.clear();
+            this.dateOfBirthField.clear();
+            this.gradeLevelField.clear();
         } 
-        //SHOULD LOAD EVERY FOLLOWING STUDENT
+        
         else {
-          if (Integer.parseInt(statusField.getText()) < numberOfStudents) {
-             index = index + 1;
-            statusField.setText(Integer.toString(index + 1));
+          if (Integer.parseInt(this.statusField.getText()) < numberOfStudents) {
+             index++;
+            this.statusField.setText(Integer.toString(index + 1));
             
-            firstNameField.setText(studentList.get(index).getFirstName());
-            lastNameField.setText(studentList.get(index).getLastName());
-            dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
-            gradeLevelField.setText(studentList.get(index).getGradeLevel());
-            
-            System.out.println(studentList.get(index).toString());
+            this.firstNameField.setText(studentList.get(index).getFirstName());
+            this.lastNameField.setText(studentList.get(index).getLastName());
+            this.dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
+            this.gradeLevelField.setText(studentList.get(index).getGradeLevel());
             
         }
           else
        
-            statusField.setText("Last student reached");
+            this.statusField.setText("Last student reached");
         }
         }
 
@@ -141,26 +153,75 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handlePreviousButtonAction(ActionEvent event) {
         
-        if(!isInt(statusField.getText()))
-        statusField.setText("No Students Viewed Yet");
+        if(!isInt(this.statusField.getText()))
+        this.statusField.setText("No Students Viewed Yet");
         else{
-            if (Integer.parseInt(statusField.getText()) > 1) {
+            if (Integer.parseInt(this.statusField.getText()) > 1) {
             
-            index = Integer.parseInt(statusField.getText()) - 2;
-            statusField.setText(Integer.toString(Integer.parseInt(statusField.getText()) - 1));
+            index = Integer.parseInt(this.statusField.getText()) - 2;
+            this.statusField.setText(Integer.toString(Integer.parseInt(this.statusField.getText()) - 1));
            
-            firstNameField.setText(studentList.get(index).getFirstName());
-            lastNameField.setText(studentList.get(index).getLastName());
-            dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
-            gradeLevelField.setText(studentList.get(index).getGradeLevel());
+            this.firstNameField.setText(studentList.get(index).getFirstName());
+            this.lastNameField.setText(studentList.get(index).getLastName());
+            this.dateOfBirthField.setText(studentList.get(index).getDateOfBirth());
+            this.gradeLevelField.setText(studentList.get(index).getGradeLevel());
             
             
         }
             else
-                statusField.setText("First Student Reached");
+                this.statusField.setText("First Student Reached");
         }
 
     }
+    
+    @FXML
+    private void handleWriteButtonAction(ActionEvent event){
+   
+        Student studentHolder=null;
+        //WILL ONLY WRITE TO FILE IF THERE ARE STUDENTS LOADED IN MEMORY
+        if(!studentList.isEmpty()){
+        
+        try{
+String savePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "StudentList.ser";
+FileOutputStream fileOut = new FileOutputStream(savePath);
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(studentList);        
+         out.close();
+         fileOut.close();
+         this.statusField.setText("Serialized data is saved in " + savePath);
+        
+         }
+         catch(IOException e) {
+         e.printStackTrace();
+      }
+        
+        System.out.println(studentList.toString());
+        }
+        
+        else
+            this.statusField.setText("StudentList is empty");
+    }
+            
+    @FXML
+    private void handleLoadButtonAction(ActionEvent event){
+        LinkedList<Student> studentListHolder=null;
+        try {
+        String savePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "StudentList.ser";
+         FileInputStream fileIn = new FileInputStream(savePath);
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         studentListHolder = (LinkedList<Student>)in.readObject();
+         in.close();
+         fileIn.close();
+      }catch(IOException i) {
+         i.printStackTrace();
+         return;
+      }catch(ClassNotFoundException c) {
+         System.out.println("StudentList not found");
+         c.printStackTrace();
+         return;
+      }
+        System.out.println(studentListHolder.toString());
+    }        
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

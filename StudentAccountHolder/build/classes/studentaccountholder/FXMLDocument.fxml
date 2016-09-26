@@ -47,5 +47,7 @@
          </children>
       </FlowPane>
       <TextField fx:id="statusField" layoutX="161.0" layoutY="208.0" />
+      <Button fx:id="writeButton" layoutX="68.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleWriteButtonAction" prefHeight="25.0" prefWidth="95.0" text="Write to FIle" />
+      <Button fx:id="loadButton" layoutX="277.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleLoadButtonAction" prefHeight="25.0" prefWidth="101.0" text="Load to File" />
     </children>
 </AnchorPane>
